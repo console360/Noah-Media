@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: noah_django_container
+    restart: always
+    build:
+      context: .
+    entrypoint: ./docker-entrypoint.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8000:80"
+    env_file:
+      - .env
+    depends_on:
+    - db
+
+  db:
+    container_name: noah_db_container
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=noah21082020
+      - POSTGRES_DB=noah
+    volumes:
+      - ./postgres-data:/var/lib/postgresql
+    ports:
+    - "5433:5432"
